@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>{0}</title>
+    <link rel='stylesheet' href='/style.css'>
+  </head>
+  <body>
+    <div class='page'>
+      <div class='title'>
+        <h1>theleftexit.net</h1>
+      </div>
+      <div class='header'>
+        <ul>{1}
+        </ul>
+      </div>
+      <div class='content'>
+{2}
+      </div>
+      <hr>
+      <div class='footer'>
+        <table>{3}
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

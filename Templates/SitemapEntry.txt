@@ -1,0 +1,4 @@
+﻿	<url>
+		<loc>{0}</loc>
+		<lastmode>{1}</lastmod>
+	</url>
