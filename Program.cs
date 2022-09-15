@@ -2,17 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
 var configBuilder = new ConfigurationBuilder();
-configBuilder.AddCommandLine(args);
+configBuilder.AddJsonFile("config.json");
 var config = configBuilder.Build();
 var rambleConfig = config.Get<RambleConfiguration>();
-
-/* For local testing
-var rambleConfig = new RambleConfiguration {
-    FromPath = "C:\\Users\\TheLeftExit\\Desktop\\RamblesTest\\content",
-    ToPath = "C:\\Users\\TheLeftExit\\Desktop\\RamblesTest\\publish",
-    RootUrl = "https://theleftexit.net"
-};
-*/
 
 var serviceCollection = new ServiceCollection();
 serviceCollection.AddSingleton(rambleConfig);

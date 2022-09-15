@@ -26,4 +26,5 @@ public class RambleConfiguration {
     public string FromPath { get; set; } = default!;
     public string ToPath { get; set; } = default!;
     public string RootUrl { get; set; } = default!;
+    public string SiteName { get; set; } = default!;
 }

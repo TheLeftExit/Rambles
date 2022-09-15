@@ -59,7 +59,7 @@ public class RambleRenderer : IRambleRenderer {
             .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
 
         foreach(var ramble in typedRambles) {
-            var page = string.Format(_pageTemplate, ramble.Title, header, ramble.Content, footer);
+            var page = string.Format(_pageTemplate, ramble.Title, _configuration.SiteName, header, ramble.Content, footer);
             yield return new RambleFileInfo(ramble.FilePath, page);
         }
 
