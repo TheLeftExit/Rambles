@@ -28,8 +28,7 @@
         foreach (var path in allRamblePaths) {
             var text = File.ReadAllText(path);
             var relativePath = Path.GetRelativePath(fromPath, path);
-            var lastWriteDate = File.GetLastWriteTimeUtc(path);
-            yield return new RambleFileInfo(relativePath, text, lastWriteDate);
+            yield return new RambleFileInfo(relativePath, text);
         }
     }
 }

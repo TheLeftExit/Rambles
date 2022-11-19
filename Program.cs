@@ -6,6 +6,8 @@ configBuilder.AddJsonFile("config.json");
 var config = configBuilder.Build();
 var rambleConfig = config.Get<RambleConfiguration>();
 
+ArgumentNullException.ThrowIfNull(rambleConfig);
+
 var serviceCollection = new ServiceCollection();
 serviceCollection.AddSingleton(rambleConfig);
 serviceCollection.AddSingleton<IRambleFileManager, RambleFileManager>();
@@ -32,7 +34,7 @@ public class Application {
 
     public void Run() {
         var markdownFiles = _fileManager.ReadAllRambles(_configuration.FromPath).ToArray();
-        var parsedFiles = markdownFiles.Select(x => new RambleInfo(x.Path, _parser.Parse(x.Content), x.LastWriteDate)).ToArray();
+        var parsedFiles = markdownFiles.Select(x => new RambleInfo(x.Path, _parser.Parse(x.Content))).ToArray();
         var renderedFiles = _renderer.Render(parsedFiles).ToArray();
         _fileManager.CopyNonRamblesAndWriteRambles(_configuration.FromPath, _configuration.ToPath, renderedFiles);
     }

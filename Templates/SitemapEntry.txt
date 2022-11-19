@@ -1,4 +1,3 @@
 ﻿	<url>
 		<loc>{0}</loc>
-		<!--<lastmod>{1}</lastmod>-->
 	</url>

@@ -11,9 +11,9 @@ public class RambleRenderer : IRambleRenderer {
 
     private readonly RambleConfiguration _configuration;
 
-    private string GetResourceString(string resourceName) {
+    private static string GetResourceString(string resourceName) {
         using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)!;
-        using StreamReader reader = new StreamReader(stream);
+        using StreamReader reader = new(stream);
         return reader.ReadToEnd();
     }
 
@@ -27,7 +27,7 @@ public class RambleRenderer : IRambleRenderer {
         _configuration = configuration;
     }
 
-    private string GetHref(string filePath) {
+    private static string GetHref(string filePath) {
         var trimmedPath = Path.ChangeExtension(filePath, null).ToLower();
         if (trimmedPath == "index") return "/";
         return "/" + trimmedPath;
@@ -37,7 +37,6 @@ public class RambleRenderer : IRambleRenderer {
         var typedRambles = rambles
             .Select(x => new {
                 FilePath = Path.ChangeExtension(x.Path, ".html"),
-                LastWriteDate = XmlConvert.ToString(x.LastWriteDate, XmlDateTimeSerializationMode.Utc),
                 Href = GetHref(x.Path),
                 Content = x.Ramble.GetContent(),
                 Title = x.Ramble.GetValue("Title"),
@@ -65,7 +64,7 @@ public class RambleRenderer : IRambleRenderer {
 
         var sitemapEntries = typedRambles
             .Where(x => x.Date is not null || x.HeaderIndex is not null)
-            .Select(x => string.Format(_sitemapEntryTemplate, _configuration.RootUrl + x.Href, x.LastWriteDate))
+            .Select(x => string.Format(_sitemapEntryTemplate, _configuration.RootUrl + x.Href))
             .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
         var sitemap = string.Format(_sitemapTemplate, sitemapEntries);
         yield return new RambleFileInfo("sitemap.xml", sitemap);

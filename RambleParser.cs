@@ -1,5 +1,4 @@
 ﻿using Markdig;
-using Markdig.Extensions.Tables;
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
 
@@ -13,7 +12,7 @@ public class RambleParser : IRambleParser {
             .Build();
     }
 
-    private IReadOnlyDictionary<string, string> ParseYaml(ReadOnlySpan<char> text) {
+    private static IReadOnlyDictionary<string, string> ParseYaml(ReadOnlySpan<char> text) {
         var result = new Dictionary<string, string>();
         foreach (var line in text.EnumerateLines()) {
             if (line.Trim() == "---") continue;
@@ -43,8 +42,8 @@ public class RambleParser : IRambleParser {
     }
 
     private class Ramble : IRamble {
-        private string _content;
-        private IReadOnlyDictionary<string, string>? _metadata;
+        private readonly string _content;
+        private readonly IReadOnlyDictionary<string, string>? _metadata;
 
         public Ramble(string content, IReadOnlyDictionary<string, string>? metadata = null) {
             _content = content;

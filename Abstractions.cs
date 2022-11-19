@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-public record RambleInfo(string Path, IRamble Ramble, DateTime LastWriteDate);
+public record RambleInfo(string Path, IRamble Ramble);
 
-public record RambleFileInfo(string Path, string Content, DateTime LastWriteDate = default);
+public record RambleFileInfo(string Path, string Content);
 
 public interface IRambleFileManager {
     IEnumerable<RambleFileInfo> ReadAllRambles(string fromPath);
