@@ -16,11 +16,7 @@
       <div class='content'>
 {3}
       </div>
-      <hr>
-      <div class='footer'>
-        <table>{4}
-        </table>
-      </div>
+{4}
     </div>
   </body>
 </html>

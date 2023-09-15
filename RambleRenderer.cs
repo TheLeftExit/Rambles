@@ -6,6 +6,7 @@ public class RambleRenderer : IRambleRenderer {
     private readonly string _pageTemplate;
     private readonly string _headerTemplate;
     private readonly string _footerTemplate;
+    private readonly string _footerEntryTemplate;
     private readonly string _sitemapTemplate;
     private readonly string _sitemapEntryTemplate;
 
@@ -21,6 +22,7 @@ public class RambleRenderer : IRambleRenderer {
         _pageTemplate = GetResourceString("TheLeftExit.Rambles.Templates.Page.txt");
         _headerTemplate = GetResourceString("TheLeftExit.Rambles.Templates.Header.txt");
         _footerTemplate = GetResourceString("TheLeftExit.Rambles.Templates.Footer.txt");
+        _footerEntryTemplate = GetResourceString("TheLeftExit.Rambles.Templates.FooterEntry.txt");
         _sitemapTemplate = GetResourceString("TheLeftExit.Rambles.Templates.Sitemap.txt");
         _sitemapEntryTemplate = GetResourceString("TheLeftExit.Rambles.Templates.SitemapEntry.txt");
         
@@ -51,14 +53,23 @@ public class RambleRenderer : IRambleRenderer {
             .Select(x => string.Format(_headerTemplate, x.Href, x.Title))
             .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
 
-        var footer = typedRambles
+        var footerTable = typedRambles
             .Where(x => x.Date is not null)
             .OrderByDescending(x => x.Date)
-            .Select(x => string.Format(_footerTemplate, x.Date, x.Href, x.Title))
+            .Select(x => string.Format(_footerEntryTemplate, x.Date, x.Href, x.Title))
             .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
 
+        var footer = string.Format(_footerTemplate, footerTable);
+
         foreach(var ramble in typedRambles) {
-            var page = string.Format(_pageTemplate, ramble.Title, _configuration.SiteName, header, ramble.Content, footer);
+            var page = string.Format(
+                _pageTemplate,
+                ramble.Title,
+                _configuration.SiteName,
+                header,
+                ramble.Content,
+                ramble.HideFooter ?? false ? "" : footer
+            );
             yield return new RambleFileInfo(ramble.FilePath, page);
         }
 
