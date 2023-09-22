@@ -1,15 +1,13 @@
 ﻿namespace TheLeftExit.Rambles;
 
 public record RambleInfo(string Path, Ramble Ramble);
-
 public record RambleFileInfo(string Path, string Content);
+public record RambleConfiguration(string FromPath, string ToPath);
 
 public interface IRambleRenderer
 {
     IEnumerable<RambleFileInfo> Render(IEnumerable<RambleInfo> rambles);
 }
-
-public record RambleConfiguration(string FromPath, string ToPath);
 
 public static class Rambler
 {

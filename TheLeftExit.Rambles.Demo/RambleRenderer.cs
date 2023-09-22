@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using TheLeftExit.Rambles;
 
+Rambler.Run<RambleRenderer>(new RambleConfiguration("content", "publish"));
+
 public class RambleRenderer : IRambleRenderer {
     private const string baseUrl = "https://theleftexit.net";
     private const string relativeUrl = "/Rambles/";
