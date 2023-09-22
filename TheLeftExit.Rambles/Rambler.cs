@@ -1,4 +1,6 @@
-﻿public record RambleInfo(string Path, Ramble Ramble);
+﻿namespace TheLeftExit.Rambles;
+
+public record RambleInfo(string Path, Ramble Ramble);
 
 public record RambleFileInfo(string Path, string Content);
 

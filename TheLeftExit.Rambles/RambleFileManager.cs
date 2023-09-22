@@ -1,4 +1,6 @@
-﻿internal class RambleFileManager {
+﻿namespace TheLeftExit.Rambles;
+
+internal class RambleFileManager {
     public void CopyNonRamblesAndWriteRambles(string fromPath, string toPath, IEnumerable<RambleFileInfo> rambles) {
         var allRelativeDirs = Directory
             .EnumerateDirectories(fromPath, "*", SearchOption.AllDirectories)

@@ -2,6 +2,8 @@
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
 
+namespace TheLeftExit.Rambles;
+
 public class RambleParser {
     private readonly MarkdownPipeline _markdownPipeline;
 

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TheLeftExit.Rambles;
 
 public class RambleRenderer : IRambleRenderer {
     private const string rootUrl = "https://theleftexit.net/rambles";
@@ -60,7 +61,7 @@ public class RambleRenderer : IRambleRenderer {
 <html lang='en'>
     <head>
     <title>{0}</title>
-    <link rel='stylesheet' href='/style.css'>
+    <link rel='stylesheet' href='https://theleftexit.net/rambles/style.css'>
     </head>
     <body>
     <div class='page'>
