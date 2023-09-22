@@ -3,7 +3,7 @@ using TheLeftExit.Rambles;
 
 public class RambleRenderer : IRambleRenderer {
     private const string baseUrl = "https://theleftexit.net";
-    private const string relativeUrl = "/rambles/";
+    private const string relativeUrl = "/Rambles/";
 
     private static string GetHref(string filePath) {
         var trimmedPath = Path.ChangeExtension(filePath, null).ToLower();
