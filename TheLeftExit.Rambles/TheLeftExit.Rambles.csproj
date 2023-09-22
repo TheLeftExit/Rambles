@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<LangVersion>preview</LangVersion>
-	<PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <ItemGroup>
