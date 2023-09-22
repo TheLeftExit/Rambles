@@ -22,7 +22,7 @@ jobs:
     - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-    - run: mkdir pages
+    - run: mkdir publish
     - run: dotnet run --project ./TheLeftExit.Rambles.Demo/TheLeftExit.Rambles.Demo.csproj
     - run: echo theleftexit.net > publish/CNAME
     - uses: actions/upload-pages-artifact@v1.0.4
