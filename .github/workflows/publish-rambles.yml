@@ -1,0 +1,33 @@
+name: build-run-push
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-run-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      deployments: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.x
+    - run: mkdir pages
+    - run: dotnet publish TheLeftExit.Rambles.Demo -o ./
+    - run: dotnet TheLeftExit.Rambles.Demo.dll
+    - run: echo theleftexit.net > publish/CNAME
+    - uses: actions/upload-pages-artifact@v1.0.4
+      with:
+        path: 'publish'
+    - uses: actions/deploy-pages@v1.1.0
+      id: deployment

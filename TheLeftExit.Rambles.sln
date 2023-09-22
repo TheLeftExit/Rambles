@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.32804.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheLeftExit.Rambles", "TheLeftExit.Rambles.csproj", "{3BF30D5E-AADE-4F66-9681-F089827A5A41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheLeftExit.Rambles", "TheLeftExit.Rambles\TheLeftExit.Rambles.csproj", "{3BF30D5E-AADE-4F66-9681-F089827A5A41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLeftExit.Rambles.Demo", "TheLeftExit.Rambles.Demo\TheLeftExit.Rambles.Demo.csproj", "{8417C94A-78BA-43F9-99E9-9E0A561FC0EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3BF30D5E-AADE-4F66-9681-F089827A5A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF30D5E-AADE-4F66-9681-F089827A5A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BF30D5E-AADE-4F66-9681-F089827A5A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8417C94A-78BA-43F9-99E9-9E0A561FC0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8417C94A-78BA-43F9-99E9-9E0A561FC0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8417C94A-78BA-43F9-99E9-9E0A561FC0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8417C94A-78BA-43F9-99E9-9E0A561FC0EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
