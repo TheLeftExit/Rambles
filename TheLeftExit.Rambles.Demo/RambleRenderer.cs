@@ -61,7 +61,7 @@ public class RambleRenderer : IRambleRenderer {
 <html lang='en'>
     <head>
     <title>{0}</title>
-    <link rel='stylesheet' href='https://theleftexit.net/rambles/style.css'>
+    <link rel='stylesheet' href='https://theleftexit.net/Rambles/style.css'>
     </head>
     <body>
     <div class='page'>
