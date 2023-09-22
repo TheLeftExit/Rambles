@@ -1,8 +1,0 @@
-﻿          <tr>
-            <td class='footer-date'>
-              {0}
-            </td>
-            <td class='footer-title'>
-              <a href='{1}'>{2}</a>
-            </td>
-          </tr>

@@ -1,0 +1,32 @@
+name: Publish to Github Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-run-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      deployments: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - run: mkdir publish
+    - run: dotnet run --project ./TheLeftExit.Rambles.Demo/TheLeftExit.Rambles.Demo.csproj
+    - run: echo theleftexit.net > publish/CNAME
+    - uses: actions/upload-pages-artifact@v1.0.4
+      with:
+        path: 'publish'
+    - uses: actions/deploy-pages@v1.1.0
+      id: deployment

@@ -1,5 +1,0 @@
-      <hr>
-      <div class='footer'>
-        <table>{0}
-        </table>
-      </div>
