@@ -2,12 +2,13 @@
 using TheLeftExit.Rambles;
 
 public class RambleRenderer : IRambleRenderer {
-    private const string rootUrl = "https://theleftexit.net/rambles";
+    private const string baseUrl = "https://theleftexit.net";
+    private const string relativeUrl = "/rambles/";
 
     private static string GetHref(string filePath) {
         var trimmedPath = Path.ChangeExtension(filePath, null).ToLower();
-        if (trimmedPath == "index") return "/";
-        return "/" + trimmedPath;
+        if (trimmedPath == "index") return relativeUrl;
+        return relativeUrl + trimmedPath;
     }
 
     public IEnumerable<RambleFileInfo> Render(IEnumerable<RambleInfo> rambles) {
@@ -49,7 +50,7 @@ public class RambleRenderer : IRambleRenderer {
 
         var sitemapEntries = typedRambles
             .Where(x => x.Date is not null || x.HeaderIndex is not null)
-            .Select(x => string.Format(_sitemapEntryTemplate, rootUrl + x.Href))
+            .Select(x => string.Format(_sitemapEntryTemplate, baseUrl + x.Href))
             .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
         var sitemap = string.Format(_sitemapTemplate, sitemapEntries);
         yield return new RambleFileInfo("sitemap.xml", sitemap);
