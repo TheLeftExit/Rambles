@@ -1,60 +1,108 @@
-﻿using System.Text;
+﻿using Markdig.Extensions.Tables;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
+using System.Text;
 using TheLeftExit.Rambles;
 
-Rambler.Run<RambleRenderer>(new RambleConfiguration("content", "publish"));
+Rambler.Run<RambleRenderer>(new RambleConfiguration(
+    "content",
+    "publish"
+));
+
+public record TypedRamble(
+    // Utility fields
+    string FilePath,
+    string Href,
+    string Content,
+    // Renderer fields
+    string Title,
+    int? HeaderIndex,
+    DateTime? Date,
+    string? Category,
+    string? Footer
+);
+
+public static class StringEnumerableExtensions
+{
+    public static string Concatenate(this IEnumerable<string> strings)
+    {
+        return !strings.Any()
+            ? ""
+            : strings.Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
+    }
+}
 
 public class RambleRenderer : IRambleRenderer {
     private const string baseUrl = "https://theleftexit.net";
     private const string relativeUrl = "/Rambles/";
 
-    private static string GetHref(string filePath) {
+    private static string GetHref(string filePath)
+    {
         var trimmedPath = Path.ChangeExtension(filePath, null).ToLower();
-        if (trimmedPath == "index") return relativeUrl;
+        if (trimmedPath.ToLower().EndsWith("index"))
+        {
+            trimmedPath = trimmedPath.Substring(0, trimmedPath.ToLower().LastIndexOf("index"));
+        }
         return relativeUrl + trimmedPath;
     }
 
-    public IEnumerable<RambleFileInfo> Render(IEnumerable<RambleInfo> rambles) {
+    public IEnumerable<RambleFileInfo> Render(IEnumerable<RambleInfo> rambles)
+    {
         var typedRambles = rambles
-            .Select(x => new {
-                FilePath = Path.ChangeExtension(x.Path, ".html"),
-                Href = GetHref(x.Path),
-                Content = x.Ramble.GetContent(),
-                Title = x.Ramble.GetValue("Title"),
-                HeaderIndex = int.TryParse(x.Ramble.GetValue("HeaderIndex"), out int headerIndex) ? headerIndex : (int?)null,
-                Date = DateOnly.TryParse(x.Ramble.GetValue("Date"), out DateOnly date) ? date : (DateOnly?)null,
-                HideFooter = bool.TryParse(x.Ramble.GetValue("HideFooter"), out bool hideFooter) ? hideFooter : (bool?)null,
-            }).ToArray();
+            .Select(x => new TypedRamble
+            (
+                FilePath: Path.ChangeExtension(x.Path, ".html"),
+                Href: GetHref(x.Path),
+                Content: x.Ramble.GetContent(),
+                Title: x.Ramble.GetValue("Title") ?? throw new ArgumentNullException(),
+                HeaderIndex: int.TryParse(x.Ramble.GetValue("HeaderIndex"), out int headerIndex) ? headerIndex : null,
+                Date: DateTime.TryParse(x.Ramble.GetValue("Date"), out DateTime date) ? date : null,
+                Category: x.Ramble.GetValue("Category"),
+                Footer: x.Ramble.GetValue("Footer") ?? x.Ramble.GetValue("Category")
+            )).ToList();
 
-        var header = typedRambles
+        var headerRambles = typedRambles
             .Where(x => x.HeaderIndex is not null)
-            .OrderBy(x => x.HeaderIndex)
+            .OrderBy(x => x.HeaderIndex);
+
+        var header = headerRambles
             .Select(x => string.Format(_headerTemplate, x.Href, x.Title))
-            .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
+            .Concatenate();
 
-        var footerTable = typedRambles
-            .Where(x => x.Date is not null)
-            .OrderByDescending(x => x.Date)
-            .Select(x => string.Format(_footerEntryTemplate, x.Date, x.Href, x.Title))
-            .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
+        var footers = typedRambles
+            .Where(x => x.Date is not null && x.Category is not null)
+            .GroupBy(x => x.Category!)
+            .ToDictionary(
+                group => group.Key,
+                group => string.Format(
+                    _footerTemplate,
+                    group
+                        .OrderByDescending(x => x.Date)
+                        .Select(x => string.Format(_footerEntryTemplate, x.Date?.ToString("MMMM d, yyyy 'at' h tt"), x.Href, x.Title))
+                        .Concatenate()
+                    )
+            );
 
-        var footer = string.IsNullOrEmpty(footerTable) ? "" : string.Format(_footerTemplate, footerTable);
-
-        foreach(var ramble in typedRambles) {
+        foreach (var ramble in typedRambles)
+        {
             var page = string.Format(
                 _pageTemplate,
                 ramble.Title,
                 header,
                 ramble.Content,
-                ramble.HideFooter ?? false ? "" : footer
+                footers.GetValueOrDefault(ramble.Footer ?? "") ?? "",
+                relativeUrl
             );
             yield return new RambleFileInfo(ramble.FilePath, page);
         }
 
-        var sitemapEntries = typedRambles
-            .Where(x => x.Date is not null || x.HeaderIndex is not null)
-            .Select(x => string.Format(_sitemapEntryTemplate, baseUrl + x.Href))
-            .Aggregate(new StringBuilder(), (sb, s) => sb.AppendLine().Append(s), sb => sb.ToString());
-        var sitemap = string.Format(_sitemapTemplate, sitemapEntries);
+        var sitemap = string.Format(
+            _sitemapTemplate,
+            typedRambles
+                .Where(x => x.Date is not null || x.HeaderIndex is not null)
+                .Select(x => string.Format(_sitemapEntryTemplate, baseUrl + x.Href))
+                .Concatenate()
+            );
         yield return new RambleFileInfo("sitemap.xml", sitemap);
     }
 

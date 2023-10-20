@@ -1,6 +1,7 @@
 ---
 Title: Sample post
-Date: 01/29/2022
+Date: 10/20/2023
+Category: Ramble
 ---
 # Large title
 ## Smaller title
