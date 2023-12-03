@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>@Title</title>
+    <link rel='stylesheet' href='https://theleftexit.net/Rambles/style.css'>
+</head>
+<body>
+    <div class='page'>
+        <div class='title'>
+            <h1>Rambles</h1>
+        </div>
+        <div class='header'>
+            <ul>
+                @foreach (var ramble in AllRambles.Where(x => x.HeaderIndex is not null).OrderBy(x => x.HeaderIndex))
+                {
+                    <li>
+                        <a href='@ramble.Href'>@ramble.Title</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class='content'>
+            @((MarkupString)Content)
+        </div>
+        @if (HideFooter != false)
+        {
+            <hr>
+            <div class='footer'>
+                <table>
+                    @foreach (var ramble in AllRambles.Where(x => x.Date is not null).OrderBy(x => x.Date))
+                    {
+                        <tr>
+                            <td class='footer-date'>
+                                @ramble.Date
+                            </td>
+                            <td class='footer-title'>
+                                <a href='@ramble.Href'>@ramble.Title</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</body>
+</html>
+
+@code {
+    [Parameter] public string FilePath { get; set; }
+    [Parameter] public string Href { get; set; }
+    [Parameter] public string Content { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public int? HeaderIndex { get; set; }
+    [Parameter] public DateOnly? Date { get; set; }
+    [Parameter] public bool? HideFooter { get; set; }
+
+    [Parameter] public RambleTemplate[] AllRambles { get; set; }
+}
