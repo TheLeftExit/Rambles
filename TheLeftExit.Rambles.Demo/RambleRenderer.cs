@@ -3,8 +3,8 @@ using TheLeftExit.Rambles;
 using TheLeftExit.Rambles.Demo.Templates;
 
 Rambler.Run<RambleRenderer>(new RambleConfiguration(
-    "C:\\Users\\Norton\\source\\repos\\Rambles11\\content",//"content",
-    "C:\\Users\\Norton\\source\\repos\\Rambles11\\publish"//"publish"
+    "content",
+    "publish"
 ));
 
 public class RambleRenderer : IRambleRenderer
